@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Travel Billing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .form-section h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-section h1::before {
+            content: "🚗 ";
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Receipt Styles */
+        .receipt-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 3px double #333;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .receipt-header h2 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .receipt-header .company-name {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .receipt-header .datetime {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .receipt-body {
+            margin-bottom: 25px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .receipt-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .receipt-total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .receipt-total .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .receipt-total .total-label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .receipt-total .total-amount {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+
+        .receipt-footer p {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .btn-print {
+            display: block;
+            width: 200px;
+            margin: 25px auto 0;
+            padding: 12px 30px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-print::before {
+            content: "🖨️ ";
+        }
+
+        .btn-print:hover {
+            background: #555;
+            transform: translateY(-2px);
+        }
+
+        .btn-new {
+            display: block;
+            width: 200px;
+            margin: 15px auto 0;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-new:hover {
+            background: #5a6fd6;
+            transform: translateY(-2px);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar .user-info span {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .navbar .user-info span::before {
+            content: "👤 ";
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .navbar,
+            .form-section,
+            .btn-print,
+            .btn-new {
+                display: none !important;
+            }
+
+            .receipt-section {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            .receipt-header h2 {
+                font-size: 24px;
+            }
+
+            .receipt-total {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background: #667eea;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="user-info">
+                <span th:text="${session.loggedInUser}">User</span>
+            </div>
+            <a href="/logout" class="btn-logout">Logout</a>
+        </div>
+
+        <!-- Input Form -->
+        <div class="form-section" th:unless="${totalPrice}">
+            <h1>Car Travel Billing</h1>
+            <form action="/calculate" method="post">
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" name="customerName" placeholder="Enter customer name" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobileNumber">Mobile Number</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="source">Source Location</label>
+                    <input type="text" id="source" name="source" placeholder="Enter starting point" required>
+                </div>
+                <div class="form-group">
+                    <label for="destination">Destination</label>
+                    <input type="text" id="destination" name="destination" placeholder="Enter destination" required>
+                </div>
+                <div class="form-group">
+                    <label for="distance">Distance (KM)</label>
+                    <input type="number" id="distance" name="distance" step="0.1" min="0.1" placeholder="Enter distance in kilometers" required>
+                </div>
+                <div class="form-group">
+                    <label for="pricePerKm">Price per KM (₹)</label>
+                    <input type="number" id="pricePerKm" name="pricePerKm" step="0.01" min="0.01" placeholder="Enter price per kilometer" required>
+                </div>
+                <button type="submit" class="btn-submit">Generate Receipt</button>
+            </form>
+        </div>
+
+        <!-- Receipt -->
+        <div class="receipt-section" th:if="${totalPrice}">
+            <div class="receipt-header">
+                <h2>TRAVEL RECEIPT</h2>
+                <div class="company-name">Car Travel Services</div>
+                <div class="datetime">
+                    <span th:text="${currentDate}">Date</span> at <span th:text="${currentTime}">Time</span>
+                </div>
+            </div>
+
+            <div class="receipt-body">
+                <div class="receipt-row">
+                    <span class="receipt-label">Billing No:</span>
+                    <span class="receipt-value" th:text="${billingNumber}">BILL-000001</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Customer Name:</span>
+                    <span class="receipt-value" th:text="${customerName}">Customer</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Mobile Number:</span>
+                    <span class="receipt-value" th:text="${mobileNumber}">+91-XXXXXXXXXX</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">From:</span>
+                    <span class="receipt-value" th:text="${source}">Source</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">To:</span>
+                    <span class="receipt-value" th:text="${destination}">Destination</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Distance:</span>
+                    <span class="receipt-value"><span th:text="${distance}">0</span> KM</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Rate:</span>
+                    <span class="receipt-value">₹<span th:text="${#numbers.formatDecimal(pricePerKm, 1, 2)}">0.00</span> per KM</span>
+                </div>
+            </div>
+
+            <div class="receipt-total">
+                <div class="total-row">
+                    <span class="total-label">TOTAL AMOUNT</span>
+                    <span class="total-amount">₹<span th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span></span>
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <p>Thank you for traveling with us!</p>
+                <p>Safe travels and have a wonderful journey.</p>
+            </div>
+
+            <button class="btn-print" onclick="window.print()">Print Receipt</button>
+            <a href="/" class="btn-new">New Booking</a>
+            <a href="/customers" class="btn-new" style="background: #28a745;">View All Customers</a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-focus on the first input field
+        document.addEventListener('DOMContentLoaded', function() {
+            const customerNameInput = document.getElementById('customerName');
+            if (customerNameInput) {
+                customerNameInput.focus();
+            }
+        });
+
+        // Form validation feedback
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0) {
+                    this.value = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
