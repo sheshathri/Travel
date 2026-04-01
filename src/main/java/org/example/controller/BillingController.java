@@ -95,17 +95,17 @@ public class BillingController {
         return String.format("BILL-%06d", nextNumber);
     }
 
-    @GetMapping("/customers")
-    public String viewAllCustomers(Model model) {
-        List<Billing> billings = billingRepository.findAllByOrderByCreatedAtDesc();
-        model.addAttribute("customers", billings);
-        
-        // Calculate total revenue
-        double totalRevenue = billings.stream()
-                .mapToDouble(b -> b.getTotalPrice() != null ? b.getTotalPrice() : 0.0)
-                .sum();
-        model.addAttribute("totalRevenue", totalRevenue);
-        
-        return "customers";
-    }
+    // View All Customers feature disabled
+    // @GetMapping("/customers")
+    // public String viewAllCustomers(Model model) {
+    //     List<Billing> billings = billingRepository.findAllByOrderByCreatedAtDesc();
+    //     model.addAttribute("customers", billings);
+    //     
+    //     double totalRevenue = billings.stream()
+    //             .mapToDouble(b -> b.getTotalPrice() != null ? b.getTotalPrice() : 0.0)
+    //             .sum();
+    //     model.addAttribute("totalRevenue", totalRevenue);
+    //     
+    //     return "customers";
+    // }
 }

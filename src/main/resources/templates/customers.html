@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Customers - Car Travel Billing</title>
+    <title>Appu Travels - All Records</title>
     <style>
         * {
             margin: 0;
@@ -35,17 +35,20 @@
         }
 
         .header h1 {
-            color: #333;
+            color: #1E5A8C;
             font-size: 24px;
+            letter-spacing: 1px;
         }
 
-        .header h1::before {
-            content: "📋 ";
+        .header .tagline {
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
         }
 
         .btn-back {
             padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1E5A8C 0%, #2d7ab8 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -58,7 +61,7 @@
 
         .btn-back:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(30, 90, 140, 0.4);
         }
 
         .table-container {
@@ -81,7 +84,7 @@
         }
 
         th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1E5A8C 0%, #2d7ab8 100%);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -108,7 +111,7 @@
 
         .amount {
             font-weight: 700;
-            color: #667eea;
+            color: #1E5A8C;
         }
 
         .no-data {
@@ -141,7 +144,7 @@
         }
 
         .stat-card p {
-            color: #667eea;
+            color: #1E5A8C;
             font-size: 28px;
             font-weight: 700;
         }
@@ -171,6 +174,25 @@
 
         .navbar .user-info span::before {
             content: "👤 ";
+        }
+
+        .navbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar .brand-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1E5A8C;
+            letter-spacing: 1px;
+        }
+
+        .navbar .brand-tagline {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
         }
 
         .btn-logout {
@@ -216,14 +238,23 @@
     <div class="container">
         <!-- Navbar -->
         <div class="navbar">
+            <div class="brand">
+                <div>
+                    <div class="brand-name">APPU TRAVELS</div>
+                    <div class="brand-tagline">Explore the World with Us</div>
+                </div>
+            </div>
             <div class="user-info">
                 <span th:text="${session.loggedInUser}">User</span>
+                <a href="/logout" class="btn-logout">Logout</a>
             </div>
-            <a href="/logout" class="btn-logout">Logout</a>
         </div>
 
         <div class="header">
-            <h1>All Customer Records</h1>
+            <div>
+                <h1>APPU TRAVELS</h1>
+                <div class="tagline">Explore the World with Us</div>
+            </div>
             <a href="/" class="btn-back">+ New Booking</a>
         </div>
 

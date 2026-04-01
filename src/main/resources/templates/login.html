@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Car Travel Billing</title>
+    <title>Appu Travels - Login</title>
     <style>
         * {
             margin: 0;
@@ -36,18 +36,24 @@
         }
 
         .login-header h1 {
-            color: #333;
+            color: #1E5A8C;
             font-size: 28px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
         }
 
-        .login-header h1::before {
-            content: "🚗 ";
-        }
-
-        .login-header p {
-            color: #666;
+        .login-header .logo-subtitle {
+            color: #1E5A8C;
             font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .login-header .tagline {
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
         }
 
         .form-group {
@@ -82,7 +88,7 @@
         .btn-login {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1E5A8C 0%, #2d7ab8 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -94,7 +100,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(30, 90, 140, 0.4);
         }
 
         .error-message {
@@ -120,7 +126,7 @@
         }
 
         .register-link a {
-            color: #667eea;
+            color: #1E5A8C;
             text-decoration: none;
             font-weight: 600;
         }
@@ -133,8 +139,9 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>Car Travel Billing</h1>
-            <p>Sign in to your account</p>
+            <h1>APPU</h1>
+            <div class="logo-subtitle">TRAVELS</div>
+            <div class="tagline">Explore the World with Us</div>
         </div>
 
         <div class="error-message" th:if="${error}">
