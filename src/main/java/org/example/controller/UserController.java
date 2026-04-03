@@ -53,42 +53,5 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/register")
-    public String showRegisterPage(HttpSession session) {
-        if (session.getAttribute("loggedInUser") != null) {
-            return "redirect:/";
-        }
-        return "register";
-    }
 
-    @PostMapping("/register")
-    public String register(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String confirmPassword,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
-
-        // Check if passwords match
-        if (!password.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("error", "Passwords do not match");
-            return "redirect:/register";
-        }
-
-        // Check if username already exists
-        if (userRepository.existsByUsername(username)) {
-            redirectAttributes.addFlashAttribute("error", "Username already exists");
-            return "redirect:/register";
-        }
-
-        // Create new user
-        User user = new User(username, password, "USER");
-        userRepository.save(user);
-
-        // Auto login after registration
-        session.setAttribute("loggedInUser", user.getUsername());
-        session.setAttribute("userRole", user.getRole());
-
-        return "redirect:/";
-    }
 }
